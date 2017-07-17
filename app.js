@@ -5,6 +5,7 @@
 
 require('es6-promise').polyfill();
 require('isomorphic-fetch');
+const reviewAverageCalc = require('./src/reviewAverageCalc.js');
 
 /**
 	Fetch reviews for single product with specified SKU and return them
@@ -24,6 +25,20 @@ fetchSingleProductReviews = (sku, {apiKey, apiUrl}) => {
 		return response.json();
 	});
 }
+
+/**
+	Structures single product's fetched information (and adds in calculated values, etc.)
+	in preparation for writing to JSON file
+	@protected
+	@param {Array} productReviews Array of reviews for a single product
+	@returns {Object}
+*/
+structureSingleProductReviews = (productReviews) => (
+	{
+		productReviews,
+		reviewAverage: reviewAverageCalc.calculateProductAverage(productReviews)
+	}
+);
 
 module.exports = {
 	/**
@@ -64,10 +79,12 @@ module.exports = {
 			}
 			fetchPromises.push(fetchSingleProductReviews(sku, {apiKey, apiUrl}));
 		}
+
+		// fetch all
 		return Promise.all(fetchPromises).then(values => {
-			console.log('Fetched reviews for '+values.length+' specified products: ');
-			console.dir(values);
-			return values;
+			// restructure product reviews to contain correct structure + additional data
+			let structuredValues = values.map(product => structureSingleProductReviews(product));
+			
 		});
 	}
 };
