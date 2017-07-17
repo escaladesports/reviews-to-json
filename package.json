@@ -15,6 +15,7 @@
     "mocha": "^3.4.2"
   },
   "scripts": {
+	"start": "node app.js",
     "test": "NODE_ENV=test mocha --timeout 1000"
   }
 }
