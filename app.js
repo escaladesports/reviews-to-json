@@ -6,17 +6,6 @@
 require('es6-promise').polyfill();
 require('isomorphic-fetch');
 
-
-/**
-	Fetch review average for product(s)
-	@protected
-	@param {Array.<Object>} reviews Array of product reviews to calculate the average with
-	@returns {Number} Numeric average of all reviews passed to function
-*/
- calculateProductAverage = (reviews) => {
-
-}
-
 module.exports = {
 	/**
 		Fetch reviews for product(s) and write them to one JSON file per product
