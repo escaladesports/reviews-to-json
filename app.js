@@ -75,7 +75,7 @@ module.exports = {
 		@example
 		// fetches product reviews for products 'B6101W', 'B3101W', 'B3300W' and writes them to one JSON file per product in the directory './productReviews'
 		// returns a promise that should resolve to true (assuming the API responds successfully)
-		reviewsToJson.fetchProductReviews([
+		reviewsToJson.fetchWriteProductReviews([
 			'B6101W', 'B3101W', 'B3300W'
 		],
 		{
@@ -110,6 +110,7 @@ module.exports = {
 		return Promise.all(fetchPromises).then(values => {
 			// restructure product reviews to contain correct structure + additional data
 			const structuredValues = values.map(product => structureSingleProductReviews(product));
+			// write all product files
 			const writePromises = structuredValues.map(product => writeProductFile(product, outputDir));
 			return Promise.all(writePromises);
 		});
