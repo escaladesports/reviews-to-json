@@ -8,5 +8,9 @@
   "dependencies": {
     "es6-promise": "^4.1.1",
     "isomorphic-fetch": "^2.2.1"
+  },
+  "devDependencies": {
+    "chai": "^4.1.0",
+    "mocha": "^3.4.2"
   }
 }
