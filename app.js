@@ -46,7 +46,7 @@ module.exports = {
 			apiKey: 'MY_API_KEY'
 		});
 	*/
-	fetchProductReviews: (skus, {outputDir = './products', apiKey, apiUrl}) => {
+	fetchWriteProductReviews: (skus, {outputDir = './products', apiKey, apiUrl}) => {
 		if (!skus || !Array.isArray(skus)) {
 			return Promise.reject(new Error('fetchPromiseReviews expects array of product SKUs as first param'));
 		}
