@@ -1,0 +1,12 @@
+{
+  "name": "reviews-to-json",
+  "version": "1.0.0",
+  "main": "app.js",
+  "repository": "https://github.com/escaladesports/reviews-to-json.git",
+  "author": "Christian Sedlacek",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "es6-promise": "^4.1.1",
+    "isomorphic-fetch": "^2.2.1"
+  }
+}
