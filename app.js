@@ -48,13 +48,13 @@ module.exports = {
 	*/
 	fetchWriteProductReviews: (skus, {outputDir = './products', apiKey, apiUrl}) => {
 		if (!skus || !Array.isArray(skus)) {
-			return Promise.reject(new Error('fetchPromiseReviews expects array of product SKUs as first param'));
+			return Promise.reject(new Error('fetchWriteProductReviews expects array of product SKUs as first param'));
 		}
 		if (!apiKey) {
-			return Promise.reject(new Error('fetchProductReviews expects config object with apiKey defined'));
+			return Promise.reject(new Error('fetchWriteProductReviews expects config object with apiKey defined'));
 		}
 		if (!apiUrl) {
-			return Promise.reject(new Error('fetchProductReviews expects config object with apiUrl defined'));
+			return Promise.reject(new Error('fetchWriteProductReviews expects config object with apiUrl defined'));
 		}
 
 		const fetchPromises = [];
