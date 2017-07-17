@@ -5,6 +5,7 @@
 
 require('es6-promise').polyfill();
 require('isomorphic-fetch');
+const jsonfile = require('jsonfile');
 const reviewAverageCalc = require('./src/reviewAverageCalc.js');
 
 /**
@@ -35,10 +36,32 @@ fetchSingleProductReviews = (sku, {apiKey, apiUrl}) => {
 */
 structureSingleProductReviews = (productReviews) => (
 	{
-		productReviews,
+		sku: productReviews[0].productId.toLowerCase(),
+		reviews: productReviews,
 		reviewAverage: reviewAverageCalc.calculateProductAverage(productReviews)
 	}
 );
+
+/**
+	Writes single product's fetched information to a JSON file
+	@protected
+	@param {Object} productData Object (must be valid JSON structure) to write to file
+	@param {string} outputDir Directory to write file to
+	@returns {Promise.<string|Error>} Promise resolving to file name if write was a success, or an error if it failed
+*/
+writeProductFile = (productData, outputDir) => {
+	const fileName = outputDir + '/' + productData.sku + '-reviews.json';
+	return new Promise((resolve, reject) => {
+		jsonfile.writeFile(fileName, productData, (err) => {
+			if (err) {
+				reject(err);
+			}
+			else {
+				resolve(fileName);
+			}
+		});
+	});
+}
 
 module.exports = {
 	/**
@@ -48,7 +71,7 @@ module.exports = {
 		@param {string} [config.outputDir='./products'] Directory to write output files to (optional, defaults to './products')
 		@param {string} config.apiUrl API base URL
 		@param {string} config.apiKey API private key
-		@returns {Promise.<boolean|Error>} Promise resolving to true if fetch/write was a success, resolves to an error upon failure
+		@returns {Promise.<Array.<string>|Error>} Promise resolving to an array of file names, resolves to an error upon failure
 		@example
 		// fetches product reviews for products 'B6101W', 'B3101W', 'B3300W' and writes them to one JSON file per product in the directory './productReviews'
 		// returns a promise that should resolve to true (assuming the API responds successfully)
@@ -62,6 +85,7 @@ module.exports = {
 		});
 	*/
 	fetchWriteProductReviews: (skus, {outputDir = './products', apiKey, apiUrl}) => {
+		// check for all neccessary data
 		if (!skus || !Array.isArray(skus)) {
 			return Promise.reject(new Error('fetchWriteProductReviews expects array of product SKUs as first param'));
 		}
@@ -73,6 +97,8 @@ module.exports = {
 		}
 
 		const fetchPromises = [];
+
+		// check all SKUs and then push in the fetch promise
 		for (sku of skus) {
 			if (typeof sku !== 'string') {
 				return Promise.reject(new Error('SKUs must be a string'));
@@ -83,11 +109,9 @@ module.exports = {
 		// fetch all
 		return Promise.all(fetchPromises).then(values => {
 			// restructure product reviews to contain correct structure + additional data
-			let structuredValues = values.map(product => structureSingleProductReviews(product));
-			
+			const structuredValues = values.map(product => structureSingleProductReviews(product));
+			const writePromises = structuredValues.map(product => writeProductFile(product, outputDir));
+			return Promise.all(writePromises);
 		});
 	}
 };
-
-// test
-module.exports.fetchProductReviews(['b6101w', 'b3300w'], {apiKey: 'TEST', apiUrl: 'https://goalrilla-reviews-api-staging.herokuapp.com'});
