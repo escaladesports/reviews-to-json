@@ -25,6 +25,20 @@ describe('reviewAverageCalc', () => {
 		done();
 	});
 
+	it('should correctly calculate the average if productRating is a number in string form', done => {
+		const reviews = [
+			{productRating: '5'},
+			{productRating: '3'},
+			{productRating: 1},
+			{productRating: 4},
+			{productRating: 5}
+		];
+		const expectAverage = 3.6;
+		const testAverage = reviewAverageCalc.calculateProductAverage(reviews);
+		testAverage.should.equal(expectAverage);
+		done();
+	});
+
 	it('should throw an error if review(s) don\'t have productRating specified', done => {
 		const reviews = [
 			{productRating: 5},
