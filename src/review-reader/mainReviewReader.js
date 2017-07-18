@@ -11,17 +11,17 @@ const PaginationFilter = require('./PaginationFilter.js');
  * Filters out reviews based on specified options
  * @protected
  * @param {Object} opts Config object
- * @param {string} opts.approved Indicates whether to show only approved reviews ('true' = approved only 'false' = unapproved undefined = all)
+ * @param {boolean} opts.approved Indicates whether to show only approved reviews (true = approved only false = unapproved undefined = all)
  * @param {Array.<ReviewModel>} reviews
  * @returns {Array.<ReviewModel>} Filtered array of matching ReviewModels
  */
 function filterApproved(opts, reviews) {
     // filter reviews on approval status, if specified
     const filterOpts = {};
-    if (opts.approved === 'true') {
+    if (opts.approved === true) {
         filterOpts.reviewApproved = 'TRUE';
     }
-    else if (opts.approved === 'false') {
+    else if (opts.approved === false) {
         filterOpts.reviewApproved = 'FALSE';
     }
     return (new ReviewModelFilter(filterOpts).filter(reviews));
