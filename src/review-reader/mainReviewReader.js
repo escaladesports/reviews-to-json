@@ -11,7 +11,7 @@ const PaginationFilter = require('./PaginationFilter.js');
  * Filters out reviews based on specified options
  * @protected
  * @param {Object} opts Config object
- * @param {string} opts.approved Indicates whether to show only approved reviews ('true' = approved only)
+ * @param {string} opts.approved Indicates whether to show only approved reviews ('true' = approved only 'false' = unapproved undefined = all)
  * @param {Array.<ReviewModel>} reviews
  * @returns {Array.<ReviewModel>} Filtered array of matching ReviewModels
  */
@@ -59,8 +59,8 @@ function paginate(opts, models) {
 }
 
 module.exports = {
-    fetchAllReviews: (opts) => {
-        auth.auth().then(authClient => {
+    fetchAllReviews: (opts={}) => {
+        return auth.auth().then(authClient => {
             const readOpts = setupPaginationOptions(opts);
             return reviewReader.read(authClient);
         }).then(reviews => {
@@ -69,8 +69,8 @@ module.exports = {
             return filteredReviews;
         });
     },
-    fetchProductReviews: (sku, opts) => {
-        auth.auth().then(authClient => {
+    fetchProductReviews: (sku, opts={}) => {
+        return auth.auth().then(authClient => {
             const readOpts = setupPaginationOptions(opts);
             return reviewReader.read(authClient);
         }).then(reviews => {
