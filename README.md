@@ -4,6 +4,15 @@ Fetches product reviews from product review API and writes them to JSON files
 ## Installation
 `yarn`
 
+
+## Authentication
+This reader uses environment variables for authentication credentials. The following must be specified:
+- `GOOGLE_SHEETS_PRIVATE_KEY` : Google sheets service account private API key
+- `GOOGLE_SHEETS_CLIENT_EMAIL` : Google sheets service account email
+
+dotenv is included as a dependency, so a .env file may be used in a development environment.
+
+
 ## Use
 
 ### Fetch all approved reviews
@@ -50,6 +59,7 @@ Fetches product reviews from product review API and writes them to JSON files
 	).then(filePaths => {
 		// ...
 	});
+
 
 ## Testing
 To run all unit tests (using Mocha), run `yarn test`
