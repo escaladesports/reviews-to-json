@@ -48,6 +48,9 @@ module.exports = {
 		@param {Array.<string>} skus Array of SKUs, one for each product to fetch
 		@param {Object} config Config object
 		@param {string} [config.outputDir='./products'] Directory to write output files to (optional, defaults to './products')
+		@param {boolean} [config.approved] Specifies whether to filter reviews on approval status (true = approved, false = unapproved, undefined = both)
+		@param {Number|string} [config.page] Specifies whether to paginate each set of reviews
+		@param {Number|string} [config.length] Specifies page length (or acts as a length limit if page is not specified)
 		@returns {Promise.<Array.<string>|Error>} Promise resolving to an array of file names, resolves to an error upon failure
 		@example
 		// fetches product reviews for products 'B6101W', 'B3101W', 'B3300W' and writes them to one JSON file per product in the directory './productReviews'
@@ -59,7 +62,7 @@ module.exports = {
 			outputDir: './productReviews',
 		});
 	*/
-	fetchWriteProductReviews: (skus, {outputDir = './products', approved, length, page}) => {
+	fetchWriteProductReviews: (skus, {outputDir = './products', approved, length, page}={}) => {
 		// check for all neccessary data
 		if (!skus || !Array.isArray(skus)) {
 			return Promise.reject(new Error('fetchWriteProductReviews expects array of product SKUs as first param'));
@@ -72,7 +75,7 @@ module.exports = {
 			if (typeof sku !== 'string') {
 				return Promise.reject(new Error('SKUs must be a string'));
 			}
-			fetchPromises.push(reviewReader.fetchProductReviews(sku.toUpperCase(), {approved, length, page}));
+			fetchPromises.push(reviewReader.fetchProductReviews(sku, {approved, length, page}));
 		}
 
 		// fetch all

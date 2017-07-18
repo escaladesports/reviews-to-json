@@ -79,7 +79,7 @@ module.exports = {
     },
     /**
     * Fetches reviews for all products based on specified options (if none set, fetches all reviews)
-    * @param {string} sku SKU for product to fetch
+    * @param {string} sku SKU for product to fetch (automatically converted to uppercase)
     * @param {Object} [opts={}] Config object
     * @param {boolean} [opts.approved] Indicates whether to filter reviews by approval status (true = approved only, false = unapproved only, undefined = all)
     * @param {Number|string} [opts.length] Page length or fetch length limit if opts.page is undefined
@@ -92,7 +92,7 @@ module.exports = {
             return reviewReader.read(authClient);
         }).then(reviews => {
             let filteredReviews = filterApproved(opts, reviews); // filter out based on approval, if specified in options
-            filteredReviews = (new ReviewModelFilter({productId: sku}).filter(filteredReviews)); // filter out to only contain products with specified ID
+            filteredReviews = (new ReviewModelFilter({productId: sku.toUpperCase()}).filter(filteredReviews)); // filter out to only contain products with specified ID
             filteredReviews = paginate(opts, filteredReviews); // paginate, if specified in options
             return filteredReviews;
         });

@@ -17,8 +17,6 @@ function readData(auth, options) {
     const spreadsheetId = config.get('datastore.spreadsheetId');
     const getAsync = Promise.promisify(sheets.spreadsheets.values.get);
 
-    console.log('range: '+range);
-
     return getAsync({
         auth: auth,
         spreadsheetId: spreadsheetId,
