@@ -49,7 +49,7 @@ function setupPaginationOptions(opts) {
 /**
  * Paginates model arrays post-query (be sure to call this after all other filtering)
  * @protected
- * param {Object} opts Config object (can be constructed using setupPaginationOptions)
+ * @param {Object} opts Config object (can be constructed using setupPaginationOptions)
  * @param {Array} models Array of models to paginate
  * @returns {Array} Array of models for the specified page
  */
@@ -59,6 +59,14 @@ function paginate(opts, models) {
 }
 
 module.exports = {
+    /**
+    * Fetches reviews for all products based on specified options (if none set, fetches all reviews)
+    * @param {Object} [opts={}] Config object
+    * @param {boolean} [opts.approved] Indicates whether to filter reviews by approval status (true = approved only, false = unapproved only, undefined = all)
+    * @param {Number|string} [opts.length] Page length or fetch length limit if opts.page is undefined
+    * @param {Number|string} [opts.page] Page number
+    * @returns {Array} Array of reviews fetched
+    */
     fetchAllReviews: (opts={}) => {
         return auth.auth().then(authClient => {
             const readOpts = setupPaginationOptions(opts);
@@ -69,6 +77,15 @@ module.exports = {
             return filteredReviews;
         });
     },
+    /**
+    * Fetches reviews for all products based on specified options (if none set, fetches all reviews)
+    * @param {string} sku SKU for product to fetch
+    * @param {Object} [opts={}] Config object
+    * @param {boolean} [opts.approved] Indicates whether to filter reviews by approval status (true = approved only, false = unapproved only, undefined = all)
+    * @param {Number|string} [opts.length] Page length or fetch length limit if opts.page is undefined
+    * @param {Number|string} [opts.page] Page number
+    * @returns {Array} Array of reviews fetched
+    */
     fetchProductReviews: (sku, opts={}) => {
         return auth.auth().then(authClient => {
             const readOpts = setupPaginationOptions(opts);
