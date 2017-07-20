@@ -61,6 +61,7 @@ function paginate(opts, models) {
 module.exports = {
     /**
     * Fetches reviews for all products based on specified options (if none set, fetches all reviews)
+    * @param {Object} dataStoreConfig Object containing datastore configuration (see app.js fetchWriteProductReviews for structure)
     * @param {Object} [opts={}] Config object
     * @param {boolean} [opts.approved] Indicates whether to filter reviews by approval status (true = approved only, false = unapproved only, undefined = all)
     * @param {Number|string} [opts.length] Page length or fetch length limit if opts.page is undefined
@@ -79,6 +80,7 @@ module.exports = {
     /**
     * Fetches reviews for all products based on specified options (if none set, fetches all reviews)
     * @param {string} sku SKU for product to fetch (automatically converted to uppercase)
+    * @param {Object} dataStoreConfig Object containing datastore configuration (see app.js fetchWriteProductReviews for structure)
     * @param {Object} [opts={}] Config object
     * @param {boolean} [opts.approved] Indicates whether to filter reviews by approval status (true = approved only, false = unapproved only, undefined = all)
     * @param {Number|string} [opts.length] Page length or fetch length limit if opts.page is undefined

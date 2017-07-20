@@ -3,6 +3,7 @@ module.exports = {
     /**
      * Creates a range for Google Sheets spreadsheets based on given options
      * @param {String} sheetName
+     * @param {Object} dataStoreConfig Object containing datastore configuration (see app.js fetchWriteProductReviews for structure)
      * @param {Object} [options] Options object
      * @param {Number} [options.skip=0] Optional number of rows to skip at the beginning of range (useful for skipping headers, etc.)
      * @param {Number} [options.length=null] Optional page length/record limit (falsy value = fetch all)

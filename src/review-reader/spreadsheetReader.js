@@ -43,6 +43,7 @@ module.exports = {
     /**
      * Fetches all review records from spreadsheet, with optional pagination/length limits
      * @param {google.auth.OAuth2} auth Oauth2 client with valid credentials
+     * @param {Object} dataStoreConfig Object containing datastore configuration (see app.js fetchWriteProductReviews for structure)
      * @param {Object} options Options object
      * @param {Number} options.page Page number to fetch
      * @param {Number} options.length Page length/fetch row limit
