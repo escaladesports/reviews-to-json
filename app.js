@@ -62,7 +62,7 @@ module.exports = {
 			outputDir: './productReviews',
 		});
 	*/
-	fetchWriteProductReviews: (skus, {outputDir = './products', approved, length, page}={}) => {
+	fetchWriteProductReviews: (skus, dataStoreConfig, {outputDir = './products', approved, length, page}={}) => {
 		// check for all neccessary data
 		if (!skus || !Array.isArray(skus)) {
 			return Promise.reject(new Error('fetchWriteProductReviews expects array of product SKUs as first param'));
@@ -75,7 +75,7 @@ module.exports = {
 			if (typeof sku !== 'string') {
 				return Promise.reject(new Error('SKUs must be a string'));
 			}
-			fetchPromises.push(reviewReader.fetchProductReviews(sku, {approved, length, page}));
+			fetchPromises.push(reviewReader.fetchProductReviews(sku, dataStoreConfig, {approved, length, page}));
 		}
 
 		// fetch all
@@ -88,3 +88,14 @@ module.exports = {
 		});
 	}
 };
+
+const dataConfig = require('./config/datastore.config.json');
+// test
+console.dir(dataConfig);
+module.exports.fetchWriteProductReviews(['B3101W'], dataConfig, {approved: true})
+.then(fileNames => {
+	console.log('fetched:');
+	console.dir(fileNames);
+}).catch(err => {
+	console.error('Error: '+err);
+})

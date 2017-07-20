@@ -67,10 +67,9 @@ module.exports = {
     * @param {Number|string} [opts.page] Page number
     * @returns {Array} Array of reviews fetched
     */
-    fetchAllReviews: (opts={}) => {
+    fetchAllReviews: (dataStoreConfig, opts={}) => {
         return auth.auth().then(authClient => {
-            const readOpts = setupPaginationOptions(opts);
-            return reviewReader.read(authClient);
+            return reviewReader.read(authClient, dataStoreConfig);
         }).then(reviews => {
             let filteredReviews = filterApproved(opts, reviews); // filter out based on approval, if specified in options
             filteredReviews = paginate(opts, filteredReviews); // paginate, if specified in options
@@ -86,10 +85,9 @@ module.exports = {
     * @param {Number|string} [opts.page] Page number
     * @returns {Array} Array of reviews fetched
     */
-    fetchProductReviews: (sku, opts={}) => {
+    fetchProductReviews: (sku, dataStoreConfig, opts={}) => {
         return auth.auth().then(authClient => {
-            const readOpts = setupPaginationOptions(opts);
-            return reviewReader.read(authClient);
+            return reviewReader.read(authClient, dataStoreConfig);
         }).then(reviews => {
             let filteredReviews = filterApproved(opts, reviews); // filter out based on approval, if specified in options
             filteredReviews = (new ReviewModelFilter({productId: sku.toUpperCase()}).filter(filteredReviews)); // filter out to only contain products with specified ID

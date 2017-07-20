@@ -1,20 +1,19 @@
 // dependencies
 const google = require('googleapis');
 const Promise = require('bluebird');
-const config = require('config');
 const rangeFactory = require('./rangeFactory.js');
 const ReviewModel = require('./ReviewModel.js');
 
 
 // private
-function readData(auth, options) {
+function readData(auth, dataStoreConfig, options) {
     const sheets = google.sheets('v4');
-    const range = rangeFactory.createRecordRange(config.get('datastore.sheetName'), {
-        skip: config.get('datastore.rowSkip'),
+    const range = rangeFactory.createRecordRange(dataStoreConfig.sheetName, {
+        skip: dataStoreConfig.rowSkip,
         page: options.page,
         length: options.length
     });
-    const spreadsheetId = config.get('datastore.spreadsheetId');
+    const spreadsheetId = dataStoreConfig.spreadsheetId;
     const getAsync = Promise.promisify(sheets.spreadsheets.values.get);
 
     return getAsync({
@@ -22,15 +21,15 @@ function readData(auth, options) {
         spreadsheetId: spreadsheetId,
         range: range,
     }).then(response => {
-        return parseReviews(response.values) || [];
+        return parseReviews(response.values, dataStoreConfig) || [];
     }).catch(err => {
         console.error('The Google Sheets API returned an error: '+err);
         return err;
     });
 }
 
-function parseReviews(reviews) {
-    const schema = config.get('datastore.schema');
+function parseReviews(reviews, dataStoreConfig) {
+    const schema = dataStoreConfig.schema;
     const reviewModels = [];
     for (var i=0; i<reviews.length; i++) {
         reviewModels.push(new ReviewModel(reviews[i], schema));
@@ -58,12 +57,12 @@ module.exports = {
      * // returns a promise resolving to an array of reviews 21-40 (page 2, page length 20)
      * return reviewReader.read(oauth2Client, {length: 20, page: 2});
      */
-    read: function(auth, options) {
+    read: function(auth, dataStoreConfig, options) {
         const opt = options || {};
         const setupOptions = { // read all reviews by default
             page: opt.page || 1,
             length: opt.length || null
         };
-        return readData(auth, setupOptions);
+        return readData(auth, dataStoreConfig, setupOptions);
     }
 };

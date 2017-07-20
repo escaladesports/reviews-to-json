@@ -1,0 +1,26 @@
+{
+    "spreadsheetId": "1pUVUer7_y0-IzryIYXITQE2qlZO7G0d96kya4q_HgRY",
+    "sheetName": "overview",
+    "rowSkip": 1,
+    "schema": [
+        {"col": "A", "modelKey": "reviewApproved"},
+        {"col": "B", "modelKey": "productId"},
+        {"col": "C", "modelKey": "userAlias"},
+        {"col": "D", "modelKey": "userEmail"},
+        {"col": "E", "modelKey": "userLocation"},
+        {"col": "F", "modelKey": "reviewSummary"},
+        {"col": "G", "modelKey": "reviewBody"},
+        {"col": "H", "modelKey": "productRating"},
+        {"col": "I", "modelKey": "recommendFriendReason"},
+        {"col": "J", "modelKey": "recommendFriend"},
+        {"col": "K", "modelKey": "improvesGameRating"},
+        {"col": "L", "modelKey": "qualityRating"},
+        {"col": "M", "modelKey": "valueRating"},
+        {"col": "N", "modelKey": "recommendProduct"},
+        {"col": "O", "modelKey": "userAgeOpt"},
+        {"col": "P", "modelKey": "userGenderOpt"},
+        {"col": "Q", "modelKey": "userDescriptionOpt"},
+        {"col": "R", "modelKey": "lengthOwnedOpt"},
+        {"col": "S", "modelKey": "submitTimestamp"}
+    ]
+}
