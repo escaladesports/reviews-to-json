@@ -7,7 +7,6 @@
   "license": "UNLICENSED",
   "dependencies": {
     "bluebird": "^3.5.0",
-    "config": "^1.26.1",
     "dotenv": "^4.0.0",
     "es6-promise": "^4.1.1",
     "googleapis": "^20.1.0",
