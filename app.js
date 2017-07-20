@@ -2,7 +2,7 @@
 	Module that fetches data from a Product Reviews API and writes it to JSON files
 	@module reviews-to-json
 */
-const jsonfile = require('jsonfile');
+const fse = require('fs-extra');
 const reviewAverageCalc = require('./src/reviewAverageCalc.js');
 const reviewReader = require('./src/review-reader/mainReviewReader.js');
 
@@ -15,7 +15,7 @@ const reviewReader = require('./src/review-reader/mainReviewReader.js');
 */
 structureSingleProductReviews = (productReviews) => (
 	{
-		sku: productReviews[0].productId.toLowerCase(),
+		sku: productReviews[0].productId.toLowerCase(), // RIGHT HERE is probably what needs fixing...
 		reviews: productReviews,
 		reviewAverage: reviewAverageCalc.calculateProductAverage(productReviews)
 	}
@@ -30,15 +30,8 @@ structureSingleProductReviews = (productReviews) => (
 */
 writeProductFile = (productData, outputDir) => {
 	const fileName = outputDir + '/' + productData.sku + '-reviews.json';
-	return new Promise((resolve, reject) => {
-		jsonfile.writeFile(fileName, productData, (err) => {
-			if (err) {
-				reject(err);
-			}
-			else {
-				resolve(fileName);
-			}
-		});
+	return fse.outputJson(fileName, productData).then(data => {
+		return fileName;
 	});
 }
 
@@ -46,7 +39,12 @@ module.exports = {
 	/**
 		Fetch reviews for product(s) and write them to one JSON file per product
 		@param {Array.<string>} skus Array of SKUs, one for each product to fetch
-		@param {Object} config Config object
+		@param {Object} dataStoreConfig Object containing datastore configuration
+		@param {string} dataStoreConfig.spreadsheetId Google sheets spreadsheet ID
+		@param {string} dataStoreConfig.sheetName Spreadsheet sheet name to fetch from
+		@param {Number} dataStoreConfig.rowSkip Number of rows above data rows dedicated to headers, etc.
+		@param {Array.<Object>} dataStoreConfig.schema Array of spreadsheet columns in format {col: "A", modelKey: "reviewApproved"}
+		@param {Object} config Request config object
 		@param {string} [config.outputDir='./products'] Directory to write output files to (optional, defaults to './products')
 		@param {boolean} [config.approved] Specifies whether to filter reviews on approval status (true = approved, false = unapproved, undefined = both)
 		@param {Number|string} [config.page] Specifies whether to paginate each set of reviews
