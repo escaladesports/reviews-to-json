@@ -79,7 +79,8 @@ module.exports = {
 		// fetch all
 		return Promise.all(fetchPromises).then(values => {
 			// restructure product reviews to contain correct structure + additional data
-			const structuredValues = values.map(product => structureSingleProductReviews(product));
+			const structuredValues = values.filter(product => product.length > 0) // filter out products with no reviews
+			.map(product => structureSingleProductReviews(product));
 			// write all product files
 			const writePromises = structuredValues.map(product => writeProductFile(product, outputDir));
 			return Promise.all(writePromises);
