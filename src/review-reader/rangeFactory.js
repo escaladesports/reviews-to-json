@@ -1,7 +1,3 @@
-// dependencies
-const config = require('config');
-
-
 // public
 module.exports = {
     /**
@@ -13,7 +9,7 @@ module.exports = {
      * @param {Number} [options.page=1] Optional page number
      * @returns {String} Google Sheets range string
      */
-    createRecordRange: function(sheetName, options) {
+    createRecordRange: function(sheetName, dataStoreConfig, options) {
         if (!sheetName || typeof sheetName !== 'string') {
             throw new Error('rangeFactory.createRecordRange requires a sheetName string as its first parameter');
         }
@@ -22,7 +18,7 @@ module.exports = {
         const skip = forceOptions.skip || 0; // initial rows to skip, as defined by schema
         const length = forceOptions.length || null;
         const page = forceOptions.page || 1;
-        const schema = config.get('datastore.schema');
+        const schema = dataStoreConfig.schema;
         const startColumn = schema[0].col; // first column, defined by schema
         const endColumn = schema[schema.length-1].col; // final column, defined by schema
 

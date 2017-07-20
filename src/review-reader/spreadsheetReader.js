@@ -8,7 +8,7 @@ const ReviewModel = require('./ReviewModel.js');
 // private
 function readData(auth, dataStoreConfig, options) {
     const sheets = google.sheets('v4');
-    const range = rangeFactory.createRecordRange(dataStoreConfig.sheetName, {
+    const range = rangeFactory.createRecordRange(dataStoreConfig.sheetName, dataStoreConfig, {
         skip: dataStoreConfig.rowSkip,
         page: options.page,
         length: options.length

@@ -88,14 +88,3 @@ module.exports = {
 		});
 	}
 };
-
-const dataConfig = require('./config/datastore.config.json');
-// test
-console.dir(dataConfig);
-module.exports.fetchWriteProductReviews(['B3101W'], dataConfig, {approved: true})
-.then(fileNames => {
-	console.log('fetched:');
-	console.dir(fileNames);
-}).catch(err => {
-	console.error('Error: '+err);
-})
