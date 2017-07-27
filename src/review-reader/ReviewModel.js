@@ -34,6 +34,10 @@ function ReviewModel(data, schema) {
         let currentKey = schema[i].modelKey;
         this[currentKey] = data[i];
     }
+
+    if (this.reviewApproved !== true && this.reviewApproved !== 'TRUE') {
+        this.reviewApproved = 'FALSE';
+    }
 }
 
 module.exports = ReviewModel;
