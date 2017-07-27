@@ -1,6 +1,6 @@
 {
   "name": "reviews-to-json",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "main": "app.js",
   "repository": "https://github.com/escaladesports/reviews-to-json.git",
   "author": "Christian Sedlacek",
