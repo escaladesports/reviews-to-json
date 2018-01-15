@@ -6,6 +6,28 @@ const fse = require('fs-extra');
 const reviewAverageCalc = require('./src/reviewAverageCalc.js');
 const reviewReader = require('./src/review-reader/mainReviewReader.js');
 
+groupProductReviews = (reviews) => {
+	const groupedProducts = {};
+
+	for (let review of reviews) {
+		const productId = review.productId;
+		if (!groupedProducts[productId]) {
+			groupedProducts[productId] = {
+				sku: productId,
+				reviews: [ review ],
+				reviewAverage: reviewAverageCalc.calculateProductAverage([review])
+			};
+		}
+		else {
+			const product = groupedProducts[productId];
+			product.reviews.push(review);
+			product.reviewAverage = reviewAverageCalc.calculateProductAverage(product.reviews)
+		}
+	}
+
+	return groupedProducts;
+}
+
 /**
 	Structures single product's fetched information (and adds in calculated values, etc.)
 	in preparation for writing to JSON file
@@ -83,6 +105,15 @@ module.exports = {
 			.map(product => structureSingleProductReviews(product));
 			// write all product files
 			const writePromises = structuredValues.map(product => writeProductFile(product, outputDir));
+			return Promise.all(writePromises);
+		});
+	},
+	fetchWriteAllProductReviews: (dataStoreConfig, {outputDir = './products', approved, length, page}={}) => {
+		return reviewReader.fetchAllReviews(dataStoreConfig, {approved, length, page}).then(allReviews => {
+			// group reviews by their product ID {B6101W: [...], B3102W: [...]}
+			const groupedReviews = groupProductReviews(allReviews);
+			// write all product files
+			const writePromises = Object.keys(groupedReviews).map(productId => writeProductFile(groupedReviews[productId], outputDir));
 			return Promise.all(writePromises);
 		});
 	}

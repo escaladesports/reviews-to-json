@@ -1,6 +1,6 @@
 {
     "spreadsheetId": "1pUVUer7_y0-IzryIYXITQE2qlZO7G0d96kya4q_HgRY",
-    "sheetName": "formresponses",
+    "sheetName": "submitted-reviews",
     "rowSkip": 1,
     "schema": [
         {"col": "A", "modelKey": "submitTimestamp"},
